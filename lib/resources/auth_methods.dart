@@ -3,19 +3,19 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/user.dart' as model;
+import '../models/user.dart';
 import 'storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<model.User> getUserDetails() async {
+  Future<UserModel> getUserDetails() async {
     User currentUser = _auth.currentUser!;
 
     DocumentSnapshot snap = await _firestore.collection('users').doc(currentUser.uid).get();
 
-    return model.User.fromSnap(snap);
+    return UserModel.fromSnap(snap);
   }
 
   //! Sign up
@@ -36,7 +36,7 @@ class AuthMethods {
         );
         String avatarUrl = await StorageMethods().uploadImageToStorage('avatars', file, false);
 
-        model.User user = model.User(
+        UserModel user = UserModel(
           uid: cred.user!.uid,
           username: username,
           email: email,

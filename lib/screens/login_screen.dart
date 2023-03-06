@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../layouts/mobile_screen_layout.dart';
+import '../layouts/responsive_layout_screen.dart';
+import '../layouts/web_screen_layout.dart';
 import '../resources/auth_methods.dart';
-import '../responsive/mobile_screen_layout.dart';
-import '../responsive/responsive_layout_screen.dart';
-import '../responsive/web_screen_layout.dart';
 import '../utils/colors.dart';
 import '../utils/utils.dart';
 import '../widgets/text_field_input.dart';

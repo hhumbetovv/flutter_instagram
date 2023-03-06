@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
+import 'layouts/mobile_screen_layout.dart';
+import 'layouts/responsive_layout_screen.dart';
+import 'layouts/web_screen_layout.dart';
 import 'providers/user_provider.dart';
-import 'responsive/mobile_screen_layout.dart';
-import 'responsive/responsive_layout_screen.dart';
-import 'responsive/web_screen_layout.dart';
 import 'screens/signup_screen.dart';
 import 'utils/colors.dart';
 
