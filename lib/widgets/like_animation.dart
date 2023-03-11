@@ -28,7 +28,7 @@ class _LikeAnimationState extends State<LikeAnimation> with SingleTickerProvider
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    _scale = Tween<double>(begin: 1, end: 2).animate(_controller);
+    _scale = Tween<double>(begin: 1, end: 1.2).animate(_controller);
   }
 
   @override
