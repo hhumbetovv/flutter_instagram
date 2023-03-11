@@ -4,6 +4,7 @@ import 'package:flutter_instagram/models/post.dart';
 import 'package:flutter_instagram/models/user.dart';
 import 'package:flutter_instagram/providers/user_provider.dart';
 import 'package:flutter_instagram/resources/firestore_methods.dart';
+import 'package:flutter_instagram/screens/comments_screen.dart';
 import 'package:flutter_instagram/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -153,7 +154,13 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CommentsScreen(),
+                    ),
+                  );
+                },
                 iconSize: 30,
                 icon: const Icon(
                   CupertinoIcons.chat_bubble_2,
