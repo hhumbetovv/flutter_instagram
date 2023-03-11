@@ -46,42 +46,45 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         physics: const NeverScrollableScrollPhysics(),
         children: screenItems,
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: mobileBackgroundColor,
-        activeColor: primaryColor,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.house),
-            label: '',
-            backgroundColor: primaryColor,
-            activeIcon: Icon(CupertinoIcons.house_fill),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.search),
-            label: '',
-            backgroundColor: primaryColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.add_circled),
-            label: '',
-            backgroundColor: primaryColor,
-            activeIcon: Icon(CupertinoIcons.add_circled_solid),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.heart),
-            label: '',
-            backgroundColor: primaryColor,
-            activeIcon: Icon(CupertinoIcons.heart_fill),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person),
-            label: '',
-            backgroundColor: primaryColor,
-            activeIcon: Icon(CupertinoIcons.person_fill),
-          ),
-        ],
-        currentIndex: _pageIndex,
-        onTap: onNavigationTap,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: CupertinoTabBar(
+          backgroundColor: mobileBackgroundColor,
+          activeColor: primaryColor,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.house),
+              label: '',
+              backgroundColor: primaryColor,
+              activeIcon: Icon(CupertinoIcons.house_fill),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.search),
+              label: '',
+              backgroundColor: primaryColor,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.add_circled),
+              label: '',
+              backgroundColor: primaryColor,
+              activeIcon: Icon(CupertinoIcons.add_circled_solid),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.heart),
+              label: '',
+              backgroundColor: primaryColor,
+              activeIcon: Icon(CupertinoIcons.heart_fill),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.person),
+              label: '',
+              backgroundColor: primaryColor,
+              activeIcon: Icon(CupertinoIcons.person_fill),
+            ),
+          ],
+          currentIndex: _pageIndex,
+          onTap: onNavigationTap,
+        ),
       ),
     );
   }

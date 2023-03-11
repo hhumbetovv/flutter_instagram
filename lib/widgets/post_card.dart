@@ -125,6 +125,7 @@ class _PostCardState extends State<PostCard> {
           //! Image
           GestureDetector(
             onDoubleTap: () async {
+              setState(() => _isLikeAnimating = true);
               String res = await FirestoreMethods().likePost(
                 widget.post.postId,
                 user.uid,
@@ -133,7 +134,6 @@ class _PostCardState extends State<PostCard> {
               if (res != 'success' && mounted) {
                 showSnackBar(res, context);
               }
-              setState(() => _isLikeAnimating = true);
             },
             child: Stack(
               alignment: Alignment.center,
@@ -152,7 +152,7 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 AnimatedOpacity(
-                  duration: const Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 250),
                   opacity: _isLikeAnimating ? 0.9 : 0,
                   child: LikeAnimation(
                     isAnimating: _isLikeAnimating,
