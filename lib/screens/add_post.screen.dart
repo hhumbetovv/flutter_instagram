@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram/models/user.dart';
 import 'package:flutter_instagram/providers/user_provider.dart';
@@ -98,7 +99,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
     return _file == null
         ? Center(
             child: IconButton(
-              icon: const Icon(Icons.upload),
+              iconSize: 80,
+              icon: const Icon(CupertinoIcons.cloud_upload),
               onPressed: () => _selectImage(context),
             ),
           )
@@ -109,7 +111,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 onPressed: () {
                   setState(() => _file = null);
                 },
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(CupertinoIcons.left_chevron),
               ),
               title: const Text('Post to '),
               actions: [

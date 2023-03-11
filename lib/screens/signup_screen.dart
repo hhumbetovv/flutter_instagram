@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -108,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 radius: 64,
                                 backgroundColor: Colors.grey[900],
                                 child: const Icon(
-                                  Icons.person,
+                                  CupertinoIcons.person,
                                   size: 64,
                                 ),
                               ),
@@ -117,7 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           left: 80,
                           child: IconButton(
                             onPressed: selectImage,
-                            icon: const Icon(Icons.add_a_photo),
+                            icon: const Icon(CupertinoIcons.camera),
                           ),
                         )
                       ],

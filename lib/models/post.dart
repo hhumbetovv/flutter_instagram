@@ -5,10 +5,10 @@ class PostModel {
   final String uid;
   final String username;
   final String postId;
-  final publishDate;
+  final Timestamp publishDate;
   final String postUrl;
   final String avatarUrl;
-  final likes;
+  final List likes;
 
   PostModel({
     required this.description,

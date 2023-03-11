@@ -19,3 +19,7 @@ showSnackBar(String content, BuildContext context) {
     ),
   );
 }
+
+String randomImageUrl() {
+  return 'https://picsum.photos/900';
+}
