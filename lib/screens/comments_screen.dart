@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram/models/comment.dart';
 import 'package:flutter_instagram/models/post.dart';
 import 'package:flutter_instagram/models/user.dart';
 import 'package:flutter_instagram/providers/user_provider.dart';
 import 'package:flutter_instagram/resources/firestore_methods.dart';
 import 'package:flutter_instagram/utils/colors.dart';
+import 'package:flutter_instagram/utils/utils.dart';
 import 'package:flutter_instagram/widgets/comment_card.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +40,29 @@ class _CommentsScreenState extends State<CommentsScreen> {
         backgroundColor: mobileBackgroundColor,
         title: const Text('Commnets'),
       ),
-      body: const CommentCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.post.postId)
+            .collection('comments')
+            .orderBy('publishDate', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              return CommentCard(
+                comment: CommentModel.fromSnap(snapshot.data!.docs[index]),
+              );
+            },
+          );
+        },
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -64,13 +89,16 @@ class _CommentsScreenState extends State<CommentsScreen> {
               ),
               InkWell(
                 onTap: () async {
-                  await FirestoreMethods().postComment(
+                  String res = await FirestoreMethods().postComment(
                     widget.post.postId,
                     _commentController.text,
                     user.uid,
                     user.username,
                     user.avatarUrl,
                   );
+                  if (res != 'success' && mounted) {
+                    showSnackBar(res, context);
+                  }
                   _commentController.text = '';
                 },
                 child: Container(

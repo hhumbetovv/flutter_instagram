@@ -1,10 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram/models/comment.dart';
 import 'package:flutter_instagram/utils/colors.dart';
-import 'package:flutter_instagram/utils/utils.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key});
+  const CommentCard({
+    super.key,
+    required this.comment,
+  });
+
+  final CommentModel comment;
 
   @override
   State<CommentCard> createState() => _CommentCardState();
@@ -18,7 +23,7 @@ class _CommentCardState extends State<CommentCard> {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(randomImageUrl()),
+            backgroundImage: NetworkImage(widget.comment.avatar),
             radius: 18,
           ),
           Expanded(
@@ -29,25 +34,25 @@ class _CommentCardState extends State<CommentCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'Username',
-                          style: TextStyle(
+                          text: widget.comment.name,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         TextSpan(
-                          text: ' Some Description...',
+                          text: ' ${widget.comment.text}',
                         ),
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 4),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      '21/23/2023',
-                      style: TextStyle(
+                      DateFormat.yMd().format(widget.comment.publishDate.toDate()),
+                      style: const TextStyle(
                         color: secondaryColor,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -58,13 +63,14 @@ class _CommentCardState extends State<CommentCard> {
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Icon(
-              CupertinoIcons.heart_fill,
-              size: 16,
-            ),
-          )
+          //TODO: Feature Like Button
+          // Container(
+          //   padding: const EdgeInsets.all(8),
+          //   child: const Icon(
+          //     CupertinoIcons.heart_fill,
+          //     size: 16,
+          //   ),
+          // )
         ],
       ),
     );

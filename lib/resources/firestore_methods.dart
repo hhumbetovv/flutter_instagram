@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_instagram/models/comment.dart';
 import 'package:flutter_instagram/models/post.dart';
 import 'package:flutter_instagram/resources/storage_methods.dart';
@@ -11,7 +10,6 @@ class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //! Upload post
-
   Future<String> uploadPost(
     String description,
     Uint8List file,
@@ -43,7 +41,9 @@ class FirestoreMethods {
     return res;
   }
 
-  Future<void> likePost(String postId, String uid, List likes) async {
+  //! Like the Post
+  Future<String> likePost(String postId, String uid, List likes) async {
+    String res = 'success';
     try {
       if (likes.contains(uid)) {
         await _firestore.collection('posts').doc(postId).update({
@@ -55,11 +55,14 @@ class FirestoreMethods {
         });
       }
     } catch (err) {
-      debugPrint(err.toString());
+      res = err.toString();
     }
+    return res;
   }
 
-  Future<void> postComment(String postId, String text, String uid, String name, String avatar) async {
+  //! Write a Comment to Post
+  Future<String> postComment(String postId, String text, String uid, String name, String avatar) async {
+    String res = 'success';
     try {
       if (text.isNotEmpty) {
         String commentId = const Uuid().v1();
@@ -75,10 +78,23 @@ class FirestoreMethods {
 
         _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).set(comment.toJson());
       } else {
-        debugPrint('Text is empty');
+        res = 'Text is empty';
       }
     } catch (err) {
-      debugPrint(err.toString());
+      res = err.toString();
     }
+    return res;
+  }
+
+  //! Delete Post
+
+  Future<String> deletePost(String postId) async {
+    String res = 'success';
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
   }
 }
