@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram/models/post.dart';
 import 'package:flutter_instagram/models/user.dart';
+import 'package:flutter_instagram/screens/profile_screen.dart';
 import 'package:flutter_instagram/utils/colors.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -60,11 +61,21 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final UserModel user = UserModel.fromSnap(snapshot.data!.docs[index]);
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(user.avatarUrl),
+                    return InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProfileScreen(uid: user.uid),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(user.avatarUrl),
+                          radius: 16,
+                        ),
+                        title: Text(user.username),
                       ),
-                      title: Text(user.username),
                     );
                   },
                 );
