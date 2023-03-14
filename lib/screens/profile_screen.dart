@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram/models/post.dart';
 import 'package:flutter_instagram/models/user.dart';
+import 'package:flutter_instagram/resources/auth_methods.dart';
+import 'package:flutter_instagram/resources/firestore_methods.dart';
+import 'package:flutter_instagram/screens/login_screen.dart';
 import 'package:flutter_instagram/utils/colors.dart';
 import 'package:flutter_instagram/utils/utils.dart';
 import 'package:flutter_instagram/widgets/follow_button.dart';
@@ -23,6 +26,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late UserModel _user;
   final List<PostModel> _posts = [];
+  int _followersLength = 0;
+  int _followingLength = 0;
   bool _isFollowing = false;
   bool _isLoading = false;
 
@@ -42,11 +47,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .orderBy('publishDate', descending: true)
           .get();
       _user = UserModel.fromSnap(userSnap);
-      for (var postSnap in postSnaps.docs) {
-        _posts.add(PostModel.fromSnap(postSnap));
+      if (postSnaps.docs.isNotEmpty) {
+        for (var postSnap in postSnaps.docs) {
+          _posts.add(PostModel.fromSnap(postSnap));
+        }
       }
       _isFollowing = _user.followers.contains(FirebaseAuth.instance.currentUser!.uid);
-      debugPrint(_posts[0].username);
+      _followersLength = _user.followers.length;
+      _followingLength = _user.following.length;
       setState(() {});
     } catch (err) {
       showSnackBar(err.toString(), context);
@@ -84,32 +92,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     buildStatus(_posts.length, 'posts'),
-                                    buildStatus(_user.followers.length, 'followers'),
-                                    buildStatus(_user.following.length, 'following'),
+                                    buildStatus(_followersLength, 'followers'),
+                                    buildStatus(_followingLength, 'following'),
                                   ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     FirebaseAuth.instance.currentUser!.uid == widget.uid
-                                        ? const CustomButton(
-                                            text: 'Edit Profile',
+                                        ? CustomButton(
+                                            text: 'Sign out',
                                             backgroundColor: mobileBackgroundColor,
                                             textColor: primaryColor,
                                             borderColor: Colors.grey,
+                                            function: () async {
+                                              String res = await AuthMethods().signOut();
+                                              if (res != 'success' && mounted) {
+                                                showSnackBar(res, context);
+                                              } else {
+                                                Navigator.of(context).pushReplacement(
+                                                  MaterialPageRoute(
+                                                    builder: (context) => const LoginScreen(),
+                                                  ),
+                                                );
+                                              }
+                                            },
                                           )
                                         : _isFollowing
-                                            ? const CustomButton(
+                                            ? CustomButton(
                                                 text: 'Unfollow',
                                                 backgroundColor: Colors.white,
                                                 textColor: Colors.black,
                                                 borderColor: Colors.grey,
+                                                function: () async {
+                                                  String res = await FirestoreMethods()
+                                                      .followUser(FirebaseAuth.instance.currentUser!.uid, _user.uid);
+                                                  if (res != 'success' && mounted) {
+                                                    showSnackBar(res, context);
+                                                  } else {
+                                                    setState(() {
+                                                      _isFollowing = false;
+                                                      _followersLength--;
+                                                    });
+                                                  }
+                                                },
                                               )
-                                            : const CustomButton(
+                                            : CustomButton(
                                                 text: 'Follow',
                                                 backgroundColor: Colors.blue,
                                                 textColor: primaryColor,
                                                 borderColor: Colors.blue,
+                                                function: () async {
+                                                  String res = await FirestoreMethods()
+                                                      .followUser(FirebaseAuth.instance.currentUser!.uid, _user.uid);
+                                                  if (res != 'success' && mounted) {
+                                                    showSnackBar(res, context);
+                                                  } else {
+                                                    setState(() {
+                                                      _isFollowing = true;
+                                                      _followersLength++;
+                                                    });
+                                                  }
+                                                },
                                               )
                                   ],
                                 ),

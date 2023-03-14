@@ -8,6 +8,7 @@ import 'package:flutter_instagram/providers/user_provider.dart';
 import 'package:flutter_instagram/resources/firestore_methods.dart';
 import 'package:flutter_instagram/screens/comments_screen.dart';
 import 'package:flutter_instagram/utils/colors.dart';
+import 'package:flutter_instagram/utils/globals.dart';
 import 'package:flutter_instagram/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -50,8 +51,14 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     final UserModel user = Provider.of<UserProvider>(context).getUser;
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      color: mobileBackgroundColor,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: width > webScreenSize ? secondaryColor : mobileBackgroundColor,
+        ),
+        color: mobileBackgroundColor,
+      ),
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
@@ -138,17 +145,13 @@ class _PostCardState extends State<PostCard> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.6,
-                    minHeight: MediaQuery.of(context).size.height * 0.30,
-                  ),
-                  width: double.infinity,
+                AspectRatio(
+                  aspectRatio: 1,
                   child: CachedNetworkImage(
                     imageUrl: widget.post.postUrl,
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
-                    errorWidget: (context, url, error) => const Icon(Icons.error, size: 100),
+                    errorWidget: (context, url, error) => const Center(child: Icon(Icons.error, size: 100)),
                   ),
                 ),
                 AnimatedOpacity(

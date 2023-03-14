@@ -5,6 +5,7 @@ import 'package:flutter_instagram/models/post.dart';
 import 'package:flutter_instagram/models/user.dart';
 import 'package:flutter_instagram/screens/profile_screen.dart';
 import 'package:flutter_instagram/utils/colors.dart';
+import 'package:flutter_instagram/utils/globals.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({
@@ -91,8 +92,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
                 return GridView.builder(
                   itemCount: snapshot.data!.docs.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: MediaQuery.of(context).size.width > webScreenSize ? 5 : 3,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
                   ),

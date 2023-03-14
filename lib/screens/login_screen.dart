@@ -62,83 +62,86 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(flex: 1),
-              //! Logo
-              SvgPicture.asset(
-                'assets/logo.svg',
-                height: 64,
-              ),
-              const SizedBox(height: 64),
-              //! Textfield email
-              TextFieldInput(
-                hintText: 'Enter your email',
-                textInputType: TextInputType.emailAddress,
-                textEditingController: _emailController,
-              ),
-              const SizedBox(height: 24),
-              //! Textfield password
-              TextFieldInput(
-                hintText: 'Enter your password',
-                textInputType: TextInputType.text,
-                textEditingController: _passwordController,
-                isPass: true,
-              ),
-              const SizedBox(height: 24),
-              //! Button login
-              _isLoading
-                  ? const Center(
-                      child: SizedBox(
-                        height: 39,
-                        width: 39,
-                        child: CircularProgressIndicator(),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            constraints: const BoxConstraints(maxWidth: 480),
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Spacer(flex: 1),
+                //! Logo
+                SvgPicture.asset(
+                  'assets/logo.svg',
+                  height: 64,
+                ),
+                const SizedBox(height: 64),
+                //! Textfield email
+                TextFieldInput(
+                  hintText: 'Enter your email',
+                  textInputType: TextInputType.emailAddress,
+                  textEditingController: _emailController,
+                ),
+                const SizedBox(height: 24),
+                //! Textfield password
+                TextFieldInput(
+                  hintText: 'Enter your password',
+                  textInputType: TextInputType.text,
+                  textEditingController: _passwordController,
+                  isPass: true,
+                ),
+                const SizedBox(height: 24),
+                //! Button login
+                _isLoading
+                    ? const Center(
+                        child: SizedBox(
+                          height: 39,
+                          width: 39,
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : InkWell(
+                        onTap: loginUser,
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: ShapeDecoration(
+                            color: blueColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: const Text('Log  in'),
+                        ),
                       ),
-                    )
-                  : InkWell(
-                      onTap: loginUser,
+                const SizedBox(height: 12),
+                //! Transitioning to sign up
+                const Spacer(flex: 1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: const Text('Don\'t have an account? '),
+                    ),
+                    GestureDetector(
+                      onTap: navigateToSignup,
                       child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        decoration: ShapeDecoration(
-                          color: blueColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        child: const Text('Log  in'),
                       ),
                     ),
-              const SizedBox(height: 12),
-              //! Transitioning to sign up
-              const Spacer(flex: 1),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text('Don\'t have an account? '),
-                  ),
-                  GestureDetector(
-                    onTap: navigateToSignup,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
